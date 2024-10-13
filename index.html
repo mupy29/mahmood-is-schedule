@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جدول المراجعة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* تنسيق الصفحة */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* تنسيق الجدول */
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        caption {
+            font-size: 2.2em;
+            padding: 20px;
+            font-weight: bold;
+            background: linear-gradient(90deg, #4CAF50, #81C784);
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            letter-spacing: 1.5px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            color: #555;
+            font-size: 1.1em;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .control-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            width: 80%;
+        }
+
+        .control-buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .control-buttons button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <table id="reviewTable">
+        <caption>مراجعة محمود السبوعي</caption>
+        <thead>
+            <tr>
+                <th>الايام</th>
+                <th>المادة</th>
+                <th>الكمية</th>
+                <th>إجراءات</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>الاحياء</td>
+                <td>فصل الثاني</td>
+                <td><button onclick="deleteRow(this)">مسح</button></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>النكليزي</td>
+                <td>فصل الثاني</td>
+                <td><button onclick="deleteRow(this)">مسح</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="control-buttons">
+        <button onclick="addRow()">إضافة مادة</button>
+        <button onclick="printTable()">طباعة</button>
+    </div>
+
+    <!-- إدخال جديد للمادة -->
+    <div>
+        <input type="text" id="day" placeholder="أدخل اليوم" />
+        <input type="text" id="subject" placeholder="أدخل المادة" />
+        <input type="text" id="quantity" placeholder="أدخل الكمية" />
+    </div>
+
+    <script>
+        // وظيفة لإضافة صف جديد
+        function addRow() {
+            const day = document.getElementById("day").value;
+            const subject = document.getElementById("subject").value;
+            const quantity = document.getElementById("quantity").value;
+
+            if (day === "" || subject === "" || quantity === "") {
+                alert("الرجاء ملء جميع الحقول");
+                return;
+            }
+
+            const table = document.getElementById("reviewTable").getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+
+            newRow.innerHTML = `
+                <td>${day}</td>
+                <td>${subject}</td>
+                <td>${quantity}</td>
+                <td><button onclick="deleteRow(this)">مسح</button></td>
+            `;
+
+            // تفريغ الحقول بعد الإضافة
+            document.getElementById("day").value = "";
+            document.getElementById("subject").value = "";
+            document.getElementById("quantity").value = "";
+        }
+
+        // وظيفة لمسح الصف
+        function deleteRow(button) {
+            const row = button.parentElement.parentElement;
+            row.remove();
+        }
+
+        // وظيفة لطباعة الجدول
+        function printTable() {
+            const printContents = document.getElementById("reviewTable").outerHTML;
+            const originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+    </script>
+
+</body>
+</html>
